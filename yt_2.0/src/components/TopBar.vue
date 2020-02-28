@@ -47,6 +47,7 @@
 
             </v-autocomplete>
 
+            
         </v-app-bar>
 
     </div>
@@ -78,7 +79,9 @@ export default {
                 "Nicolas",
                 "Antoine",
                 "Benjamin"
-            ]
+            ],
+
+ 
         }
     },
 
@@ -101,6 +104,7 @@ export default {
           this.loading = false
         }, 500)
       },
+
     },
 
 }
@@ -110,4 +114,5 @@ export default {
     .search{
         padding-top: 20px;
     }
+
 </style>
