@@ -1,6 +1,6 @@
 # Renforcement_Vuejs
 
-Travail réaliser par Nicolas Brazzolotto.
+Travail réalisé par Nicolas Brazzolotto.
 
 Utilisation de :
 - VueCli
