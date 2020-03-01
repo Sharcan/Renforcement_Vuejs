@@ -1,34 +1,39 @@
 <template>
     <div class="main">
+        <p class="title">Vous êtes sur le compte de: {{selectedAccount | toUppercase}}</p>
         <v-container fluid>
             <v-row
                 class="mb-6"
                 no-gutters
 
-                v-for="loop in 3"
-                :key="loop"
-
+                v-for="(user, index) in listAccount"
+                :key="index"
             >
 
-                <v-col
-                v-for="(video, number) in listOfVideo"
-                :key="number"
-                >
-                    <v-card max-width="400" class="mx-auto all" height="390px">
-                        <v-img height="200" width="100%" :src="video.lien_img"></v-img>
-                        
-                        <div class="video">
-                            <v-card-title :class="[selectedCountry === 'ES' ? disabledClass : '']" class="titre">
-                                {{video.titre}}
-                            </v-card-title>
+                <v-row v-for="loop in 3" :key="loop">
+                    <v-col
+                    v-for="(video, number) in user.listOfVideo"
+                    :key="number"
+                    
+                    >
+                        <v-card max-width="400" class="mx-auto all" height="390px" v-if="selectedAccount === user.user">
+                            <div style="width: 100%; height: 100%;"  :class="[selectedCountry === video.country ? disabledClass : '']">
+                                <v-img height="200" width="100%" :src="video.lien_img"></v-img>
+                                
+                                <div class="video">
+                                    <v-card-title class="titre">
+                                        {{video.titre}}
+                                    </v-card-title>
 
-                            <v-card-subtitle :class="[selectedCountry === 'ES' ? disabledClass : '']" class="titre">
-                                {{video.description}}
-                            </v-card-subtitle>
-                        </div>
-                    </v-card>
+                                    <v-card-subtitle class="titre">
+                                        {{video.description}}
+                                    </v-card-subtitle>
+                                </div>
+                            </div>
+                        </v-card>
 
-                </v-col>
+                    </v-col>
+                </v-row>
             </v-row>
         </v-container>
 
@@ -97,18 +102,18 @@
             class="lang"
             >
             <template v-slot:activator="{ on }">
-                    <p v-on="on" class="lang">{{selectedCountry}}</p>
-                </template>
-                <v-list>
-                    <v-list-item
-                    v-for="(country, index) in listCountry"
-                    :key="index"
-                    @click="selectCountry(country)"
-                    >
-                    <v-list-item-title>{{ country }}</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
+                    <p v-on="on" class="lang">{{selectedCountry | toUppercase}}</p>
+            </template>
+            <v-list>
+                <v-list-item
+                v-for="(country, index) in listCountry"
+                :key="index"
+                @click="selectCountry(country)"
+                >
+                <v-list-item-title>{{ country | toUppercase}}</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
 
     </div>
 </template>
@@ -117,6 +122,12 @@
 <script>
 export default {
     
+    props: {
+
+        selectedAccount: String
+
+    },
+
     data() {
         return {
             dialog: false,
@@ -125,41 +136,94 @@ export default {
             text: 'Votre vidéo est en cours de publication.',
             timeout: 2000,
 
-
-            listOfVideo: [
+            listAccount:[
                 {
-                    titre: "Je vais supprimer cette vidéo dans 3 jours, désolé.",
-                    description: "ABONNE-TOI ! http://bit.ly/2fm88Xo (merci) Vêtements Yoko : http://www.yokoshop.com Réseaux : Insta : https://www.instagram.com/xsqueezie/ Twitter : http://www.twitter.com/xSqueeZie Facebook...",
-                    lien_img:"https://i.ytimg.com/vi/QAvLzYzJulc/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDnLuhgdnP9HHfWdLm2xJswl0lJBQ",
-                    country:"FR"
+                    user: "Nicolas",
+                    lien_avatar: "https://lh3.googleusercontent.com/proxy/XNFC_MsPjhdxcFkIyIugRvNWDQjNVn2nSoHCwkP2zn16FWymLWwbApvtgtFz7DPLXXNZGC-0P_52oGEHebDHPqbI2gTJ2Nqk23tu-pzinc57Ubww198yqPZOdc5lntZjrGIgWVPR2vk9GTgCqA",
+                    listOfVideo: [
+                    {
+                        titre: "Je vais supprimer cette vidéo dans 3 jours, désolé.",
+                        description: "ABONNE-TOI ! http://bit.ly/2fm88Xo (merci) Vêtements Yoko : http://www.yokoshop.com Réseaux : Insta : https://www.instagram.com/xsqueezie/ Twitter : http://www.twitter.com/xSqueeZie Facebook...",
+                        lien_img:"https://i.ytimg.com/vi/QAvLzYzJulc/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDnLuhgdnP9HHfWdLm2xJswl0lJBQ",
+                        country:"fr"
+                    },
+                    {
+                        titre: "Taylor Swift - The Man (Official Video)",
+                        description: "Official music video by Taylor Swift performing “The Man” – off her album ‘Lover.’ ",
+                        lien_img:"https://i.ytimg.com/vi/AqAJLh9wuZ0/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCTjpS_URuBZzTz1xSIzy9JydrJJQ",
+                        country:"es"
+                    },
+                    {
+                        titre: "Le Jeu qui fait vomir ft. Léna Situations et Benjamin Tranié",
+                        description: "Abonnez-vous pour d'autres vidéos de ce type et lâchez un pouce bleu ça fait toujours plaisir. ",
+                        lien_img:"https://i.ytimg.com/vi/BDv_F_Ns-oE/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAmt8yWqf1MxwuYy6E5TuLOMHSPDg",
+                        country:"en"
+                    },
+                    ]              
                 },
                 {
-                    titre: "Taylor Swift - The Man (Official Video)",
-                    description: "Official music video by Taylor Swift performing “The Man” – off her album ‘Lover.’ ",
-                    lien_img:"https://i.ytimg.com/vi/AqAJLh9wuZ0/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCTjpS_URuBZzTz1xSIzy9JydrJJQ",
-                    country:"ES"
+                    user: "Benjamin",
+                    lien_avatar:"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTAP3wMY06MrCNznk576dHLWEkGRHzSdqRwx2v-V8GaRS2s0j6a",
+                    listOfVideo: [
+                        {
+                            titre: "Taylor Swift - The Man (Official Video)",
+                        description: "Official music video by Taylor Swift performing “The Man” – off her album ‘Lover.’ ",
+                        lien_img:"https://i.ytimg.com/vi/AqAJLh9wuZ0/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCTjpS_URuBZzTz1xSIzy9JydrJJQ",
+                        country:"es"
+                    },
+                    {
+                        titre: "Le Jeu qui fait vomir ft. Léna Situations et Benjamin Tranié",
+                        description: "Abonnez-vous pour d'autres vidéos de ce type et lâchez un pouce bleu ça fait toujours plaisir. ",
+                        lien_img:"https://i.ytimg.com/vi/BDv_F_Ns-oE/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAmt8yWqf1MxwuYy6E5TuLOMHSPDg",
+                        country:"en"
+                    },
+                    {
+                        titre: "Je vais supprimer cette vidéo dans 3 jours, désolé.",
+                        description: "ABONNE-TOI ! http://bit.ly/2fm88Xo (merci) Vêtements Yoko : http://www.yokoshop.com Réseaux : Insta : https://www.instagram.com/xsqueezie/ Twitter : http://www.twitter.com/xSqueeZie Facebook...",
+                        lien_img:"https://i.ytimg.com/vi/QAvLzYzJulc/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDnLuhgdnP9HHfWdLm2xJswl0lJBQ",
+                        country:"fr"
+                    },
+                    ]              
                 },
                 {
-                    titre: "Le Jeu qui fait vomir ft. Léna Situations et Benjamin Tranié",
-                    description: "Abonnez-vous pour d'autres vidéos de ce type et lâchez un pouce bleu ça fait toujours plaisir. ",
-                    lien_img:"https://i.ytimg.com/vi/BDv_F_Ns-oE/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAmt8yWqf1MxwuYy6E5TuLOMHSPDg",
-                    country:"EN"
-                },
-                {
-                    titre: "BTS Carpool Karaoke",
-                    description: "James Corden hits the carpool lane with international superstars BTS to sing songs off their new album ",
-                    lien_img:"https://i.ytimg.com/vi/T4x7sDevVTY/hqdefault.jpg?sqp=-oaymwEZCPYBEIoBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDl229Sdcx3l9Ysp663lW_juLPtSg",
-                    country:"FR"
+                    user: "Antoine",
+                    lien_avatar: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS7Qe42BK70LjD5j2UUe5LKExgoaYgOx7qMU00n5H810iLP1Q-D",
+                    listOfVideo: [
+                    {
+                        titre: "Taylor Swift - The Man (Official Video)",
+                        description: "Official music video by Taylor Swift performing “The Man” – off her album ‘Lover.’ ",
+                        lien_img:"https://i.ytimg.com/vi/AqAJLh9wuZ0/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLCTjpS_URuBZzTz1xSIzy9JydrJJQ",
+                        country:"es"
+                    },
+                    {
+                        titre: "Je vais supprimer cette vidéo dans 3 jours, désolé.",
+                        description: "ABONNE-TOI ! http://bit.ly/2fm88Xo (merci) Vêtements Yoko : http://www.yokoshop.com Réseaux : Insta : https://www.instagram.com/xsqueezie/ Twitter : http://www.twitter.com/xSqueeZie Facebook...",
+                        lien_img:"https://i.ytimg.com/vi/QAvLzYzJulc/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDnLuhgdnP9HHfWdLm2xJswl0lJBQ",
+                        country:"fr"
+                    },
+                    {
+                        titre: "Le Jeu qui fait vomir ft. Léna Situations et Benjamin Tranié",
+                        description: "Abonnez-vous pour d'autres vidéos de ce type et lâchez un pouce bleu ça fait toujours plaisir. ",
+                        lien_img:"https://i.ytimg.com/vi/BDv_F_Ns-oE/hqdefault.jpg?sqp=-oaymwEZCNACELwBSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLAmt8yWqf1MxwuYy6E5TuLOMHSPDg",
+                        country:"en"
+                    },
+                    ]              
                 },
             ],
-
+            
            listCountry: [
-                "EN",
-                "FR",
-                "ES"
+                "en",
+                "fr",
+                "es",
+                "all"
             ],
-            selectedCountry: "FR",
-            disabledClass: 'disabled'
+            selectedCountry: "all",
+
+            disabledClass: 'disabled',
+
+
+            absolute: true,
+            overlay: false,
  
         }
     },
@@ -173,8 +237,13 @@ export default {
         },
         
         selectCountry: function(country){
-            console.log(country)
             this.selectedCountry = country
+        }
+    },
+
+    filters: {
+        toUppercase: function(language){
+            return language.toUpperCase();
         }
     }
 
@@ -187,7 +256,6 @@ export default {
     
     .main{
         margin-top: 5%;
-        background-color: rgb(206, 202, 202);
     }
     .video{
         padding: 20px;
@@ -197,13 +265,13 @@ export default {
     }
     .v-btn-flottant{
         position: fixed;
-        bottom: 5%;
-        right: 5%;
+        left: 92%; 
+        bottom: 90%;
     }
 
     .lang{
         padding: 2%;
-        margin-top:1%;
+        margin-top:1.2%;
         font-weight: bold;
         font-size: 20px;
         cursor: pointer;
@@ -222,6 +290,11 @@ export default {
     .disabled{
         color: grey;
         cursor:default !important;
+        background-color: rgb(180, 180, 180)
+    }
+
+    .title{
+        margin-left: 4%;
     }
     
 </style>
